@@ -38,7 +38,7 @@ class HandleExcel():
         # filepath = "/12.22思维导图测试案例—12人"
         filepath = "/media/sda1/cyn-workspace/scratch_dataset"
         pathDir = Path(filepath).glob("*.sb3")
-        # pathDir = ["/media/sda1/cyn-workspace/Scratch-project/antlr/DWES/test.sb3"]
+        # pathDir = ["/media/sda1/cyn-workspace/scratch_dataset/_Poison Pongy- A glitched pong game! #games #art #all #music remix.sb3"]
         for allDir in pathDir:
             child = os.path.join(filepath, allDir)
             print("name=", allDir)
@@ -126,6 +126,7 @@ def unzip_scratch(filename):
 
 
 def ctAnalysis(argv):
+    # global all_results
     file_name = Path(argv).name
     raw_json = unzip_scratch(argv)
     encoded_json = codecs.decode(raw_json, 'utf-8', 'strict')
@@ -181,9 +182,9 @@ def ctAnalysis(argv):
     overp = set()
     changedict = {}
 
-    with open('/media/sda1/cyn-workspace/Scratch-project/antlr/DWES/changeset.pkl', 'rb') as file:
+    with open('/media/sda1/cyn-workspace/Scratch-project/antlr/ScratchEval/changeset.pkl', 'rb') as file:
         change_set = pickle.load(file)
-    with open('/media/sda1/cyn-workspace/Scratch-project/antlr/DWES/blockdict.json', 'rb') as file:
+    with open('/media/sda1/cyn-workspace/Scratch-project/antlr/ScratchEval/blockdict.json', 'rb') as file:
         block_dict = json.load(file)
 
     # num=0
@@ -194,7 +195,7 @@ def ctAnalysis(argv):
     # print(changedict)
 
     block_grade = {}
-    with open('/media/sda1/cyn-workspace/Scratch-project/antlr/DWES/blockgrade.json', 'rb') as file:
+    with open('/media/sda1/cyn-workspace/Scratch-project/antlr/ScratchEval/blockgrade.json', 'rb') as file:
         block_grade = json.load(file)
 
     block_point = {}
@@ -648,10 +649,10 @@ def ctAnalysis(argv):
         if (block[id].isDead == True):
             continue
         if (id not in block_point.keys()):
-            g.add_weighted_edges_from(
-                [(graphid[block[id].getParent()], idn, 1)])
-            save_graph.append(
-                {"source": graphid[block[id].getParent()], "target": idn, "weight": 1})
+            # g.add_weighted_edges_from(
+            #     [(graphid[block[id].getParent()], idn, 1)])
+            # save_graph.append(
+            #     {"source": graphid[block[id].getParent()], "target": idn, "weight": 1})
             continue
 
         point = block_point[id]
@@ -786,7 +787,7 @@ def ctAnalysis(argv):
     #      block_dict = json.load(file)
 
     json_string = json.dumps(save_graph, ensure_ascii=False, indent=4)
-    with open("result_json.json", "w", encoding='utf-8') as f:
+    with open("./result_json.json", "w", encoding='utf-8') as f:
         f.write(json_string)
     # 评分标准1-1
     nx.draw_networkx(g, with_labels=True)
